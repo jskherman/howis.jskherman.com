@@ -1,6 +1,13 @@
 ### Streamlit
 .streamlit/
-assets/
+
+### Binary files
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.mp4
+*.mp3
 
 ### Python
 # Byte-compiled / optimized / DLL files

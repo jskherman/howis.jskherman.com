@@ -1,0 +1,17 @@
+html,
+body,
+[class*="css"] {
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+}
+
+.stProgress>div>div>div>div {
+    background-color: chartreuse;
+}
+
+.stProgress>div>div>div {
+    height: 1.3rem;
+}
+
+body {
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+}
