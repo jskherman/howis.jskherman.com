@@ -31,9 +31,7 @@ def get_sp_data() -> dict:
     Gets the data from the Super Productivity JSON file on Dropbox
     """
     dbx = connect_to_dropbox()
-    _metadata, result = dbx.files_download(
-        path="/Apps/super_productivity/super_productivity/sp.json"
-    )
+    _metadata, result = dbx.files_download(path="/super_productivity/sp.json")
     data = json.loads(result.content)
     return data
 
