@@ -60,7 +60,7 @@ def munix_to_local(munix_time: int, timezone="Asia/Manila") -> datetime.datetime
     return timestamp
 
 
-def get_sptask_info(sp_data: dict, task_id: str) -> dict:
+def get_sptask_info(sp_data: dict, task_id: str, tasklist: str) -> dict:
     """
     Gets the metadata of a task from the Super Productivity JSON file.
     """
@@ -68,33 +68,33 @@ def get_sptask_info(sp_data: dict, task_id: str) -> dict:
     # Get task metadata
 
     # Task Title
-    title = sp_data["task"]["entities"][task_id]["title"]
+    title = sp_data[tasklist]["entities"][task_id]["title"]
 
     # Task Project
     project = sp_data["project"]["entities"][
-        (sp_data["task"]["entities"][task_id]["projectId"])
+        (sp_data[tasklist]["entities"][task_id]["projectId"])
     ]["title"]
 
     # Task Status
-    if sp_data["task"]["entities"][task_id]["isDone"]:
+    if sp_data[tasklist]["entities"][task_id]["isDone"]:
         status = True
     else:
         status = False
 
     # Task Creation Date
-    created = munix_to_local(sp_data["task"]["entities"][task_id]["created"])
+    created = munix_to_local(sp_data[tasklist]["entities"][task_id]["created"])
 
     # Task Completion Date
-    if sp_data["task"]["entities"][task_id]["doneOn"] is None:
+    if sp_data[tasklist]["entities"][task_id]["doneOn"] is None:
         completion = None
     else:
-        completion = munix_to_local(sp_data["task"]["entities"][task_id]["doneOn"])
+        completion = munix_to_local(sp_data[tasklist]["entities"][task_id]["doneOn"])
 
     # Task Time Spent
-    spent = sp_data["task"]["entities"][task_id]["timeSpent"] // 1000
+    spent = sp_data[tasklist]["entities"][task_id]["timeSpent"] // 1000
 
     # Task Time Estimate
-    estimate = sp_data["task"]["entities"][task_id]["timeEstimate"] // 1000
+    estimate = sp_data[tasklist]["entities"][task_id]["timeEstimate"] // 1000
 
     # Task Fudge Ratio
     if estimate > 0:
@@ -104,7 +104,7 @@ def get_sptask_info(sp_data: dict, task_id: str) -> dict:
 
     # Get tags for Task
     tags = []
-    for tag_id in sp_data["task"]["entities"][task_id]["tagIds"]:
+    for tag_id in sp_data[tasklist]["entities"][task_id]["tagIds"]:
         tag = sp_data["tag"]["entities"][tag_id]["title"]
         tags.append(tag)
 
@@ -145,7 +145,11 @@ def get_sptasks(sp_data: dict):
     """
     tasks = []
     for task in sp_data["task"]["entities"]:
-        task_meta = get_sptask_info(sp_data, task)
+        task_meta = get_sptask_info(sp_data, task, tasklist="task")
+        tasks.append(task_meta)
+
+    for task in sp_data["taskArchive"]["entities"]:
+        task_meta = get_sptask_info(sp_data, task, tasklist="taskArchive")
         tasks.append(task_meta)
 
     df_tasks = pd.DataFrame(tasks)
