@@ -138,7 +138,7 @@ def get_sptask_info(sp_data: dict, task_id: str, tasklist: str) -> dict:
     return task_metadata
 
 
-@st.experimental_memo(ttl=1800)
+@st.experimental_memo()
 def get_sptasks(sp_data: dict):
     """
     Gets all tasks from the Super Productivity JSON file.
