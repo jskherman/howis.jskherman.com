@@ -1,5 +1,7 @@
-### Streamlit
+### Streamlit and Custom Files
 .streamlit/
+assets/*.csv
+assets/*.7z
 
 ### Binary files
 *.jpg
@@ -8,6 +10,17 @@
 *.gif
 *.mp4
 *.mp3
+
+### Archive files
+*.zip
+*.tar
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.rar
+*.7z
+*.tgz
+*.gz
 
 ### Python
 # Byte-compiled / optimized / DLL files
