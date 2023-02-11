@@ -16,7 +16,7 @@ init_page(pg_title="Super Productivity", pg_icon="✅", title="Super Productivit
 # Functions
 
 
-@st.experimental_memo
+@st.experimental_memo(ttl=600)
 def get_sp_data() -> dict:
     """
     Gets the data from the Super Productivity JSON file on Dropbox
