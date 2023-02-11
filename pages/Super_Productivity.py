@@ -189,5 +189,13 @@ df_recent = df_done[
 # Page layout
 
 with st.container():
-    st.markdown("### Recently Completed")
+    st.markdown("### Completed Tasks in the last 7 days")
     st.dataframe(df_recent)
+
+with st.container():
+    st.markdown("### All Completed Tasks")
+    st.dataframe(df_done)
+
+with st.container():
+    st.markdown("### All Tasks")
+    st.dataframe(df_tasks)
