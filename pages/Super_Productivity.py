@@ -2,9 +2,10 @@
 import datetime
 import json
 
-import dropbox
+# import dropbox
 import pandas as pd
 import pytz
+import requests
 import streamlit as st
 from load import init_page
 
@@ -13,26 +14,17 @@ init_page(pg_title="Super Productivity", pg_icon="✅", title="Super Productivit
 
 # ---------------------------------------------
 # Functions
-@st.experimental_singleton
-def connect_to_dropbox():
-    """
-    Connect to Dropbox.
-    """
-    if "dbx" not in st.session_state:
-        st.session_state["dbx"] = dropbox.Dropbox(
-            st.secrets["data"]["dropbox_access_token"]
-        )
-    return st.session_state["dbx"]
 
 
-@st.experimental_memo()
+@st.cache()
 def get_sp_data() -> dict:
     """
     Gets the data from the Super Productivity JSON file on Dropbox
     """
-    dbx = connect_to_dropbox()
-    _metadata, result = dbx.files_download(path="/super_productivity/sp.json")
-    data = json.loads(result.content)
+    _r = requests.get(st.secrets["data"]["sp_json_url"])
+    _r.encoding = "utf-8"
+    data = json.loads(_r.text)
+
     return data
 
 
