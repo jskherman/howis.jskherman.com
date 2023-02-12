@@ -32,14 +32,15 @@ def initialize_db():
     deta = connect_to_deta()
     events_db = deta.Base("events")
     habits_db = deta.Base("habits")
+    solve_db = deta.Base("solve")
 
-    return events_db, habits_db
+    return events_db, habits_db, solve_db
 
 
 # ----------------------------
 # Global Variables
 
-events_db, habits_db = initialize_db()
+events_db, habits_db, solve_db = initialize_db()
 
 # ----------------------------
 # Page Layout
@@ -285,3 +286,23 @@ with habits_tab:
     ### Habits Row 2 ###
     with st.container():
         habit_r2c1, habit_r2c2, habit_r1c3 = st.columns(3)
+
+        with habit_r2c1:
+            solve_form = st.form(key="h_solve", clear_on_submit=True)
+            with solve_form:
+                st.markdown("##### Solve Problems 🧠")
+                solvep = solve_form.number_input(
+                    "Number of Problems Solved", min_value=1, step=1
+                )
+                if solve_form.form_submit_button("Submit", type="primary"):
+                    solve_db.put(
+                        {
+                            "key": gen_timestamp_key(),
+                            "event": "solve problem",
+                            "type": "habit",
+                            "value": solvep,
+                            "timestamp": unix_timestamp,
+                        }
+                    )
+                    st.markdown(fanfare_html, unsafe_allow_html=True)
+                    st.balloons()
