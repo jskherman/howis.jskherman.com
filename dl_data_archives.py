@@ -1,4 +1,5 @@
 import base64
+import datetime
 import os
 import re
 import urllib.request
@@ -48,7 +49,11 @@ def download(url: str, dest_folder: str):
 
     r = requests.get(url, stream=True)
     if r.ok:
-        print("Saving to:", os.path.abspath(file_path))
+        print(
+            f'\n({datetime.datetime.now().strftime("%H:%M:%S")})',
+            "Saving to:\n> ",
+            os.path.abspath(file_path),
+        )
         with open(file_path, "wb") as f:
             for chunk in r.iter_content(chunk_size=1024 * 8):
                 if chunk:
@@ -78,21 +83,31 @@ def extract_7z_file(archive_path: str):
         archive.extractall(os.path.dirname(archive_path))
 
 
-def main(onedrive_link: str, dest_folder: str = "tmp"):
-    history_url = onedrive_link
-    browser_history_7z, browser_history_7z_size = download_onedrive_file(
-        history_url, dest_folder
+def dl_csv_archive(onedrive_link: str, dest_folder: str = "tmp"):
+    csv_7z, csv_7z_size = download_onedrive_file(onedrive_link, dest_folder)
+    print(f"Downloaded {csv_7z_size} MB for the current archive.")
+    extract_7z_file(csv_7z)
+    csv_file = csv_7z[:-3]
+    print(
+        f'({datetime.datetime.now().strftime("%H:%M:%S")})',
+        f"Extracted CSV file:\n> '{csv_file}'",
     )
-    print(f"Downloaded {browser_history_7z_size} MB for browser history 7z archive.")
-    extract_7z_file(browser_history_7z)
-    print("Extracted browser history CSV file.")
-    csv_file = os.path.join(os.path.dirname(browser_history_7z), "history_backup.csv")
-
+    os.remove(csv_7z)
     return csv_file
 
 
-if __name__ == "__main__":
-    csv_f = main(
+def main():
+    csv_webhistory = dl_csv_archive(
         onedrive_link="https://1drv.ms/u/s!Aq-Pwiif__0FjJQA9rgZ1EVR4nUkLg?e=TDfaFi",
         dest_folder="assets",
     )
+    csv_anki_stats = dl_csv_archive(
+        onedrive_link="https://1drv.ms/u/s!Aq-Pwiif__0FjJQWs2JH9caDV2wF0g?e=avh4kl",
+        dest_folder="assets",
+    )
+
+    return csv_webhistory, csv_anki_stats
+
+
+if __name__ == "__main__":
+    main()
