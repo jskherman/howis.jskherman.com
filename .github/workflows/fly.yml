@@ -7,7 +7,7 @@ env:
 FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 jobs:
 deploy:
-name: Deploy app
+name: Deploy Fly.io howisjsk app
 runs-on: ubuntu-latest
 steps:
   - uses: actions/checkout@v3
