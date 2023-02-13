@@ -27,7 +27,7 @@ def gen_timestamp_key():
     return key
 
 
-@st.experimental_singleton
+@st.cache_resource
 def initialize_db():
     deta = connect_to_deta()
     events_db = deta.Base("events")

@@ -17,7 +17,7 @@ init_page(
 # Functions
 
 
-@st.experimental_memo(ttl=1800)
+@st.cache_data(ttl=1800)
 def load_weather_data() -> pd.DataFrame:
     """
     Load Weather data from Deta.
@@ -39,7 +39,7 @@ def load_weather_data() -> pd.DataFrame:
     return df
 
 
-@st.cache(ttl=43200)
+@st.cache_data(ttl=43200)
 def show_sunrise_sunset(df: pd.DataFrame) -> tuple[str, str, str]:
     """
     Show sunrise and sunset times.

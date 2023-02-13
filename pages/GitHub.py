@@ -19,7 +19,7 @@ init_page(
 # Functions
 
 
-@st.experimental_memo(ttl=43200)
+@st.cache_data(ttl=43200)
 def load_github_data() -> tuple[pd.DataFrame, pd.Series]:
     """
     Load GitHub Contributions data from Deta.
@@ -67,7 +67,7 @@ def draw_calplot(ds: pd.Series, year: int = None, cmap: str = "YlGn"):
     return fig
 
 
-@st.cache()
+@st.cache_data()
 def draw_plotly_calplot(df: pd.DataFrame, year: int = None, cmap: str = "YlGn"):
     if year is not None:
         df = df.loc[df["date"].dt.year == year]
@@ -93,7 +93,7 @@ def draw_plotly_calplot(df: pd.DataFrame, year: int = None, cmap: str = "YlGn"):
     return fig
 
 
-@st.cache()
+@st.cache_data()
 def draw_contrib_heatmap(df_heatmap: pd.DataFrame, cmap: str = "YlGn"):
     df_heatmap["month"] = df_heatmap["date"].dt.month
     df_heatmap["weekday"] = df_heatmap["date"].dt.weekday

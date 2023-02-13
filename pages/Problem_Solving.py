@@ -20,7 +20,7 @@ init_page(
 # Functions
 
 
-@st.experimental_memo(ttl=43200)
+@st.cache_data(ttl=43200)
 def load_problem_solving_data() -> pl.DataFrame:
     """
     Load Problem Solving data from Deta.
@@ -99,7 +99,7 @@ def generate_streak_info(
     return final_df
 
 
-@st.cache()
+@st.cache_data()
 def draw_plotly_calplot(df: pd.DataFrame, year: int = None):
     if year is not None:
         df = df.loc[df["Date"].dt.year == year]
