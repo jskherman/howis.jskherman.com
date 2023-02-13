@@ -1,4 +1,4 @@
-# fly.toml file generated for howisjsk on 2023-02-13T11:57:10+08:00
+# fly.toml file generated for howisjsk on 2023-02-13T19:08:49+08:00
 
 app = "howisjsk"
 kill_signal = "SIGINT"
