@@ -23,15 +23,15 @@ st.markdown(
 
 with st.container():
 
-    tab1, tab2, tab3 = st.tabs(["Drive", "FATE", "lofi"])
+    tab1, tab2, tab3 = st.tabs(["An Image"])
 
     with tab1:
         st.image(
             "https://user-images.githubusercontent.com/68434444/201343331-224ed454-e49f-45de-a43a-1de733a7c771.jpg"
         )
 
-    with tab2:
-        st.image("https://i.imgur.com/P71mNOe.png")
+    # with tab2:
+    #     st.image("https://i.imgur.com/P71mNOe.png")
 
-    with tab3:
-        st.video("https://www.youtube.com/watch?v=inhxaBLh1Rk")
+    # with tab3:
+    #     st.video("https://www.youtube.com/watch?v=inhxaBLh1Rk")
