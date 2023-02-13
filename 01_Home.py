@@ -23,7 +23,7 @@ st.markdown(
 
 with st.container():
 
-    tab1, tab2, tab3 = st.tabs(["An Image"])
+    tab1 = st.tabs(["An Image"])
 
     with tab1:
         st.image(
