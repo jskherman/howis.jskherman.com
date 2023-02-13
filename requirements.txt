@@ -13,7 +13,6 @@ cycler==0.11.0
 decorator==5.1.1
 deltalake==0.7.0
 deta==1.1.0
-dropbox==11.36.0
 entrypoints==0.4
 fonttools==4.38.0
 fsspec==2023.1.0
@@ -52,7 +51,7 @@ semver==2.13.0
 six==1.16.0
 smmap==5.0.0
 stone==3.3.1
-streamlit==1.17.0
+streamlit==1.18.1
 tenacity==8.2.0
 toml==0.10.2
 toolz==0.12.0
