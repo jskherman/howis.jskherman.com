@@ -56,7 +56,10 @@ def load_problem_solving_data() -> pl.DataFrame:
 
 
 def generate_streak_info(
-    df: pd.DataFrame, streak_column: str, null_value
+    df: pd.DataFrame,
+    streak_column: str,
+    null_value,
+    count_null_streak: bool = False,
 ) -> pd.DataFrame:
     """
     Parameters
@@ -84,7 +87,12 @@ def generate_streak_info(
     """
     data = df[streak_column].to_frame()
     data["result"] = data[streak_column] != null_value
-    data["start_of_streak"] = data["result"].ne(data["result"].shift())
+    if count_null_streak:
+        data["start_of_streak"] = data["result"].ne(data["result"].shift())
+    else:
+        data["start_of_streak"] = (data["result"].ne(data["result"].shift())) + data[
+            "result"
+        ].eq(False)
     data["streak_id"] = data.start_of_streak.cumsum()
     data[f"{streak_column} Streak"] = data.groupby("streak_id").cumcount() + 1
     final_df = pd.concat([df, data[f"{streak_column} Streak"]], axis=1)
@@ -125,7 +133,7 @@ def draw_plotly_bar(df: pd.DataFrame, select_year: int = None):
     return fig
 
 
-def solve_metrics(df: pl.DataFrame):
+def solve_metrics(df: pl.DataFrame, count_null_streak: bool = False):
     total_solved = df.select(pl.col("Problems Solved").sum())["Problems Solved"][0]
     avg_solve_perday = round(
         df.select(pl.col("Problems Solved").mean())["Problems Solved"][0], 2
@@ -135,7 +143,9 @@ def solve_metrics(df: pl.DataFrame):
     stdf = stdf.sort_values(by="Date", ascending=True)
     stdf = stdf.set_index("Date", drop=True)
     stdf = stdf.asfreq("D", fill_value=0)
-    stdf = generate_streak_info(stdf, "Problems Solved", 0)
+    stdf = generate_streak_info(
+        stdf, "Problems Solved", 0, count_null_streak=count_null_streak
+    )
     max_streak = stdf["Problems Solved Streak"].max()
     current_streak = int(stdf["Problems Solved Streak"].iloc[-1])
     # if len(stdf) > 1:
@@ -168,7 +178,7 @@ solve_df, date_df = load_problem_solving_data()
     max_streak,
     current_streak,
     streak_df,
-) = solve_metrics(solve_df)
+) = solve_metrics(solve_df, count_null_streak=False)
 
 
 # selected_year = st.slider(
