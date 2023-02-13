@@ -194,16 +194,9 @@ solve_df, date_df = load_problem_solving_data()
 # Main Page
 
 with st.container():
-    pcol1, pcol2 = st.columns([1, 3])
+    pcol1, pcol2 = st.columns([3, 1])
 
     with pcol1:
-        selected_year = st.selectbox(
-            label="Select year in data:",
-            options=yr_options,
-            index=yr_options.index(current_year),
-        )
-
-    with pcol2:
         st.markdown("<br>", unsafe_allow_html=True)
         with st.expander("Rationale"):
             st.markdown(
@@ -214,6 +207,13 @@ with st.container():
             to solve problems on a daily basis, so I am tracking my progress.
             """
             )
+
+    with pcol2:
+        selected_year = st.selectbox(
+            label="Select year in data:",
+            options=yr_options,
+            index=yr_options.index(current_year),
+        )
 
 with st.container():
     mcol1, mcol2, mcol3, mcol4 = st.columns(4)
