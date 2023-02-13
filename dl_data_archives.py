@@ -7,6 +7,7 @@ from urllib.parse import unquote
 
 import py7zr
 import requests
+import streamlit as st
 
 
 def create_onedrive_directdownload(onedrive_link):
@@ -96,13 +97,27 @@ def dl_csv_archive(onedrive_link: str, dest_folder: str = "tmp"):
     return csv_file
 
 
+def get_env_var(VAR_NAME: str, from_env: bool = False):
+    if os.path.exists(".streamlit/secrets.toml"):
+        env_var = st.secrets[VAR_NAME]
+    elif from_env:
+        env_var = os.environ.get(VAR_NAME)
+    else:
+        env_var = os.environ.get(VAR_NAME)
+
+    return env_var
+
+
 def main():
+    anki_link = get_env_var("ANKI_URL")
+    webhistory_link = get_env_var("WEBHISTORY_URL")
+
     csv_webhistory = dl_csv_archive(
-        onedrive_link=st.secrets["webhistory"]",
+        onedrive_link=webhistory_link,
         dest_folder="assets",
     )
     csv_anki_stats = dl_csv_archive(
-        onedrive_link=st.secrets["anki"]",
+        onedrive_link=anki_link,
         dest_folder="assets",
     )
 
