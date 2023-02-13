@@ -1,3 +1,5 @@
+import os
+
 import streamlit as st
 from deta import Deta
 
@@ -21,6 +23,17 @@ def init_page(*, pg_title="JSK's Stats", pg_icon=":stars:", title=None, layout="
         st.title(title)
 
 
+def get_env_var(VAR_NAME: str, from_env: bool = False):
+    if os.path.exists(".streamlit/secrets.toml"):
+        env_var = st.secrets[VAR_NAME]
+    elif from_env:
+        env_var = os.environ.get(VAR_NAME)
+    else:
+        env_var = os.environ.get(VAR_NAME)
+
+    return env_var
+
+
 # ----------------------------
 # Data Functions
 
@@ -31,7 +44,8 @@ def connect_to_deta():
     Connect to Deta.
     """
     if "deta" not in st.session_state:
-        st.session_state["deta"] = Deta(st.secrets["deta"]["project_key"])
+        deta_project_key = get_env_var("DETA_PROJECT_KEY")
+        st.session_state["deta"] = Deta(deta_project_key)
     return st.session_state["deta"]
 
 

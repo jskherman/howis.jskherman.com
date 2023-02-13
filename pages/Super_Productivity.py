@@ -1,6 +1,7 @@
 # Imports
 import datetime
 import json
+import os
 
 # import dropbox
 import pandas as pd
@@ -16,12 +17,24 @@ init_page(pg_title="Super Productivity", pg_icon="✅", title="Super Productivit
 # Functions
 
 
+def get_env_var(VAR_NAME: str, from_env: bool = False):
+    if os.path.exists(".streamlit/secrets.toml"):
+        env_var = st.secrets[VAR_NAME]
+    elif from_env:
+        env_var = os.environ.get(VAR_NAME)
+    else:
+        env_var = os.environ.get(VAR_NAME)
+
+    return env_var
+
+
 @st.experimental_memo(ttl=600)
 def get_sp_data() -> dict:
     """
     Gets the data from the Super Productivity JSON file on Dropbox
     """
-    _r = requests.get(st.secrets["data"]["sp_json_url"])
+    sp_json = get_env_var("SP_JSON_URL")
+    _r = requests.get(sp_json)
     _r.encoding = "utf-8"
     data = json.loads(_r.text)
 
