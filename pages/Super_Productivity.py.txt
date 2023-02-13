@@ -28,7 +28,7 @@ def get_env_var(VAR_NAME: str, from_env: bool = False):
     return env_var
 
 
-@st.experimental_memo(ttl=600)
+@st.cache_data(ttl=600)
 def get_sp_data() -> dict:
     """
     Gets the data from the Super Productivity JSON file on Dropbox
@@ -141,7 +141,7 @@ def get_sptask_info(sp_data: dict, task_id: str, tasklist: str) -> dict:
     return task_metadata
 
 
-@st.experimental_memo()
+@st.cache_data()
 def get_sptasks(sp_data: dict):
     """
     Gets all tasks from the Super Productivity JSON file.

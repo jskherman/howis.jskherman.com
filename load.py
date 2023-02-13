@@ -38,7 +38,7 @@ def get_env_var(VAR_NAME: str, from_env: bool = False):
 # Data Functions
 
 
-@st.experimental_singleton
+@st.cache_resource
 def connect_to_deta():
     """
     Connect to Deta.
