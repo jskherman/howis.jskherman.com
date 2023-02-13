@@ -98,11 +98,11 @@ def dl_csv_archive(onedrive_link: str, dest_folder: str = "tmp"):
 
 def main():
     csv_webhistory = dl_csv_archive(
-        onedrive_link="https://1drv.ms/u/s!Aq-Pwiif__0FjJQA9rgZ1EVR4nUkLg?e=TDfaFi",
+        onedrive_link=st.secrets["webhistory"]",
         dest_folder="assets",
     )
     csv_anki_stats = dl_csv_archive(
-        onedrive_link="https://1drv.ms/u/s!Aq-Pwiif__0FjJQWs2JH9caDV2wF0g?e=avh4kl",
+        onedrive_link=st.secrets["anki"]",
         dest_folder="assets",
     )
 
