@@ -45,7 +45,7 @@ with st.container():
 
         If you have any suggestions or feedback, please let me know! You can
         contact me on my [Website](https://jskherman.com/about/#contact-me) or
-        on [Mastodon](https://mathstodon.xyz/@jskherman).
+        on <a rel='me' href='https://mathstodon.xyz/@jskherman'>Mastodon</a>.
         """,
             unsafe_allow_html=True,
         )
