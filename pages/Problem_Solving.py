@@ -34,7 +34,7 @@ def load_problem_solving_data() -> pl.DataFrame:
     df = df.drop(["event", "type"])
     df = df.with_columns(
         [
-            pl.col("timestamp").sort_by(by="timestamp", reverse=True),
+            pl.col("timestamp").sort_by(by="timestamp", descending=True),
         ]
     )
     df = df.with_columns(
@@ -125,12 +125,32 @@ def draw_plotly_calplot(df: pd.DataFrame, year: int = None):
     return fig
 
 
-def draw_plotly_bar(df: pd.DataFrame, select_year: int = None):
+def draw_plotly_timecharts(df: pl.DataFrame, select_year: int = None):
     if select_year is not None:
-        df = df.loc[df["Date"].dt.year == select_year]
+        df = df.filter(
+            pl.col("Date").dt.year() == select_year,
+        )
 
-    fig = px.bar(df, x="Date", y="Problems Solved", height=400)
-    return fig
+    leader_df = df.sort("Problems Solved", descending=True).to_pandas()
+    leader_df["Date"] = leader_df["Date"].astype(str)
+    date_df = df.to_pandas(date_as_object=False)
+
+    fig_timeline = px.area(date_df, x="Date", y="Problems Solved")
+    fig_timeline.update_layout(title="Timeline")
+
+    fig_leaderboard = px.bar(
+        leader_df,
+        x="Problems Solved",
+        y="Date",
+        color="Problems Solved",
+    )
+    fig_leaderboard.update_layout(
+        yaxis_type="category",
+        yaxis={"categoryorder": "total ascending"},
+        title="Leaderboard",
+    )
+
+    return fig_leaderboard, fig_timeline
 
 
 def solve_metrics(df: pl.DataFrame, count_null_streak: bool = False):
@@ -249,7 +269,14 @@ st.plotly_chart(
     use_container_width=True,
 )
 
+fig_leaderboard, fig_timeline = draw_plotly_timecharts(solve_df)
+
 st.plotly_chart(
-    draw_plotly_bar(date_df),
+    fig_timeline,
+    use_container_width=True,
+)
+
+st.plotly_chart(
+    fig_leaderboard,
     use_container_width=True,
 )
